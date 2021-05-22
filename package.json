@@ -1,16 +1,16 @@
 {
-  "name": "node-typescript-boilerplate",
+  "name": "keycloak-signup-backend",
   "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "description": "Keycloak signup app backend.",
   "engines": {
     "node": ">= 14.16 <15"
   },
   "devDependencies": {
     "@types/jest": "~26.0.23",
-    "@types/node": "~14.14.44",
-    "@typescript-eslint/eslint-plugin": "~4.23.0",
-    "@typescript-eslint/parser": "~4.23.0",
-    "eslint": "~7.26.0",
+    "@types/node": "~15.6.0",
+    "@typescript-eslint/eslint-plugin": "~4.24.0",
+    "@typescript-eslint/parser": "~4.24.0",
+    "eslint": "~7.27.0",
     "eslint-config-prettier": "~8.3.0",
     "eslint-plugin-jest": "~24.3.6",
     "jest": "~26.6.3",
@@ -29,7 +29,7 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
+  "author": "Elokapina / Extinction Rebellion Finland <info@elokapina.me>",
   "license": "Apache-2.0",
   "dependencies": {
     "tslib": "~2.2.0"
