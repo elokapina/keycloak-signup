@@ -32,6 +32,7 @@
   "author": "Elokapina / Extinction Rebellion Finland <info@elokapina.me>",
   "license": "Apache-2.0",
   "dependencies": {
+    "keycloak-admin": "^1.14.17",
     "tslib": "~2.2.0"
   },
   "volta": {
