@@ -33,6 +33,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "keycloak-admin": "^1.14.17",
+    "pg": "^8.6.0",
     "tslib": "~2.2.0"
   },
   "volta": {
