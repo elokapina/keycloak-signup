@@ -1,11 +1,12 @@
 interface Config {
     keycloak: {
-        baseUrl: string;
-        clientId: string;
-        password: string;
-        realm: string;
-        username: string;
-    }
+        baseUrl: string
+        clientId: string
+        password: string
+        realm: string
+        username: string
+    },
+    secretToken: string
 }
 
 const config: Config = {
@@ -15,7 +16,8 @@ const config: Config = {
         password: process.env.KEYCLOAK_PASSWORD,
         realm: process.env.KEYCLOAK_REALM,
         username: process.env.KEYCLOAK_USERNAME,
-    }
+    },
+    secretToken: process.env.KEYLOACK_SIGNUP_SECRET_TOKEN,
 }
 
-export default config;
+export default config
