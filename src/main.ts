@@ -3,14 +3,22 @@ dotenv.config()
 
 import * as bodyParser from "body-parser"
 import * as express from "express"
+import * as nunjucks from "nunjucks"
 import config from "./config"
+import { PagesTable } from "./database/tables"
 import { createPage, IPage } from "./pages"
+import { getDatabaseConnection } from "./database/database"
 import { setupDatabase } from "./database/database"
 
 const app = express()
 const port = 3000
 app.use(express.static('public'))
 app.use(bodyParser.json())
+
+nunjucks.configure("views", {
+    autoescape: true,
+    express: app
+})
 
 setupDatabase()
     .then(() => {
@@ -42,12 +50,24 @@ app.post('/api/pages', async(req, res) => {
             error: "Failed to create page"
         })
     }
-
+    console.log(`Created page with token ${page.signup_token}`)
     res.send(page)
 })
 
 app.get('/health', (_req, res) => {
     res.send('OK')
+})
+
+app.get('/:pageId([A-Z]{6})', async(req, res) => {
+    const dbClient = getDatabaseConnection()
+    const pages = await dbClient.query(
+        PagesTable.select("*", ["signup_token"])([req.params.pageId])
+    )
+    if (pages.length === 0) {
+        return res.render('shrug.html')
+    }
+    console.log(`Rendering page ${req.params.pageId}`)
+    res.render('page.html', pages[0])
 })
 
 app.listen(port, () => {
