@@ -1,12 +1,27 @@
+import * as dotenv from "dotenv"
+dotenv.config()
+
+import * as bodyParser from "body-parser"
 import * as express from "express"
 import config from "./config"
 import { createPage, IPage } from "./pages"
+import { setupDatabase } from "./database/database"
 
 const app = express()
 const port = 3000
 app.use(express.static('public'))
+app.use(bodyParser.json())
 
-app.post('/pages', async(req, res) => {
+setupDatabase()
+    .then(() => {
+        console.log("Successfully setup database")
+    })
+    .catch(err => {
+        console.error("Error setting up database", err)
+        throw err
+    })
+
+app.post('/api/pages', async(req, res) => {
     const token = req.body.token
     if (token !== config.secretToken) {
         return res.status(403).send({})
@@ -22,6 +37,7 @@ app.post('/pages', async(req, res) => {
     try {
         page = await createPage(creator)
     } catch (error) {
+        console.error(error)
         return res.status(500).send({
             error: "Failed to create page"
         })
