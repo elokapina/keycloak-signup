@@ -61,6 +61,7 @@ app.get('/health', (_req, res) => {
 app.get('/:pageId([A-Z]{6})', async(req, res) => {
     const dbClient = getDatabaseConnection()
     const pages = await dbClient.query(
+        // TODO also check validity and signup counts
         PagesTable.select("*", ["signup_token"])([req.params.pageId])
     )
     if (pages.length === 0) {
@@ -68,6 +69,20 @@ app.get('/:pageId([A-Z]{6})', async(req, res) => {
     }
     console.log(`Rendering page ${req.params.pageId}`)
     res.render('page.html', pages[0])
+})
+
+app.post('/:pageId([A-Z]{6})', async(req, res) => {
+    const dbClient = getDatabaseConnection()
+    const pages = await dbClient.query(
+        // TODO also check validity and signup counts
+        PagesTable.select("*", ["signup_token"])([req.params.pageId])
+    )
+    if (pages.length === 0) {
+        return res.status(404).send({})
+    }
+    console.log(`Signup via token ${req.params.pageId}`)
+    // TODO do actual account creation
+    return res.send({})
 })
 
 app.listen(port, () => {
