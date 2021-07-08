@@ -1,7 +1,7 @@
 {
   "name": "keycloak-signup-backend",
   "version": "0.0.0",
-  "description": "Keycloak signup app backend.",
+  "description": "Keycloak self-registration app.",
   "engines": {
     "node": ">= 14.16 <15"
   },
