@@ -2,6 +2,7 @@ import * as generateStrings from "generate-strings"
 import { DateTime } from "luxon"
 import { PagesTable } from "./database/tables"
 import { Request, Response } from "express"
+import { createUser, getUsers, sendPasswordReset } from "./keycloak"
 import { getDatabaseConnection } from "./database/database"
 import { v4 as uuidv4 } from "uuid"
 
@@ -85,6 +86,32 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
         return res.status(404).send({})
     }
     console.log(`Signup via token ${req.params.pageId}`)
-    // TODO do actual account creation
-    return res.send({})
+
+    // Check if username or email exists
+    // keycloak-admin library doesn't support the `exact` query parameter, so we
+    // need to look for exact matches here.
+    // TODO patch to upstream
+    const usernameUsers = await getUsers({ username: req.body.username })
+    for (const user of usernameUsers) {
+        if (user.username === req.body.username) {
+            console.log('Found existing user with same username')
+            return res.status(400).send({error: 'This username is already reserved'})
+        }
+    }
+    const emailUsers = await getUsers({ email: req.body.email })
+    for (const user of emailUsers) {
+        if (user.email === req.body.email) {
+            console.log('Found existing user with same email')
+            return res.status(400).send({error: 'This email is already reserved'})
+        }
+    }
+
+    const userId = await createUser(req.body.username, req.body.email)
+    if (!userId) {
+        return res.status(400).send({ error: 'Unknown error creating user account' })
+    }
+    await sendPasswordReset(userId)
+    console.log(`User ${userId} created successfully, password reset sent`)
+
+    return res.send({ userId: userId })
 }
