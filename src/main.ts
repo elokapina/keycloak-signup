@@ -5,9 +5,7 @@ import * as bodyParser from "body-parser"
 import * as express from "express"
 import * as nunjucks from "nunjucks"
 import config from "./config"
-import { PagesTable } from "./database/tables"
-import { createPage, IPage } from "./pages"
-import { getDatabaseConnection } from "./database/database"
+import { createPage, IPage, pageRegister, renderPage } from "./pages"
 import { setupDatabase } from "./database/database"
 
 const app = express()
@@ -59,30 +57,11 @@ app.get('/health', (_req, res) => {
 })
 
 app.get('/:pageId([A-Z]{6})', async(req, res) => {
-    const dbClient = getDatabaseConnection()
-    const pages = await dbClient.query(
-        // TODO also check validity and signup counts
-        PagesTable.select("*", ["signup_token"])([req.params.pageId])
-    )
-    if (pages.length === 0) {
-        return res.render('shrug.html')
-    }
-    console.log(`Rendering page ${req.params.pageId}`)
-    res.render('page.html', pages[0])
+    return renderPage(req, res)
 })
 
 app.post('/:pageId([A-Z]{6})', async(req, res) => {
-    const dbClient = getDatabaseConnection()
-    const pages = await dbClient.query(
-        // TODO also check validity and signup counts
-        PagesTable.select("*", ["signup_token"])([req.params.pageId])
-    )
-    if (pages.length === 0) {
-        return res.status(404).send({})
-    }
-    console.log(`Signup via token ${req.params.pageId}`)
-    // TODO do actual account creation
-    return res.send({})
+    return pageRegister(req, res)
 })
 
 app.listen(port, () => {

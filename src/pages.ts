@@ -1,6 +1,7 @@
 import * as generateStrings from "generate-strings"
 import { DateTime } from "luxon"
 import { PagesTable } from "./database/tables"
+import { Request, Response } from "express"
 import { getDatabaseConnection } from "./database/database"
 import { v4 as uuidv4 } from "uuid"
 
@@ -59,4 +60,31 @@ export async function createPage(creator: string): Promise<IPage> {
     await dbConnection.query(query)
     console.log(`Successfully created a page with signup token ${signupToken}`)
     return page
+}
+
+export async function renderPage(req: Request, res: Response): Promise<Response> {
+    const dbClient = getDatabaseConnection()
+    const pages = await dbClient.query(
+        // TODO also check validity and signup counts
+        PagesTable.select("*", ["signup_token"])([req.params.pageId])
+    )
+    if (pages.length === 0) {
+        return res.render('shrug.html')
+    }
+    console.log(`Rendering page ${req.params.pageId}`)
+    return res.render('page.html', pages[0])
+}
+
+export async function pageRegister(req: Request, res: Response): Promise<Response> {
+    const dbClient = getDatabaseConnection()
+    const pages = await dbClient.query(
+        // TODO also check validity and signup counts
+        PagesTable.select("*", ["signup_token"])([req.params.pageId])
+    )
+    if (pages.length === 0) {
+        return res.status(404).send({})
+    }
+    console.log(`Signup via token ${req.params.pageId}`)
+    // TODO do actual account creation
+    return res.send({})
 }
