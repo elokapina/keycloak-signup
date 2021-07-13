@@ -2,6 +2,7 @@ import * as generateStrings from "generate-strings"
 import { DateTime } from "luxon"
 import { PagesTable } from "./database/tables"
 import { Request, Response } from "express"
+import { SQL } from "postgres-schema-builder"
 import { createUser, getUsers, sendPasswordReset } from "./keycloak"
 import { getDatabaseConnection } from "./database/database"
 import { v4 as uuidv4 } from "uuid"
@@ -92,12 +93,25 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
 
     const dbClient = getDatabaseConnection()
     const pages = await dbClient.query(
-        // TODO also check validity and signup counts
         PagesTable.select("*", ["signup_token"])([req.params.pageId])
     )
     if (pages.length === 0) {
         return res.status(404).send({})
     }
+    const page = pages[0]
+
+    if (page.signups_done >= page.max_signups) {
+        return res.status(403).send({
+            error: "This signup page has already had the maximum amount of signups.",
+        })
+    }
+    const currentTime = DateTime.utc()
+    if (currentTime < page.valid_from || currentTime > page.valid_to) {
+        return res.status(403).send({
+            error: "This signup page has expired.",
+        })
+    }
+
     console.log(`Signup via token ${req.params.pageId}`)
 
     // Check if username or email exists
@@ -126,6 +140,17 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     }
     await sendPasswordReset(userId)
     console.log(`User ${userId} created successfully, password reset sent`)
+
+    // Update counter
+    const query = SQL.raw(
+        `UPDATE ${PagesTable.name}
+            SET signups_done = (
+                SELECT signups_done from ${PagesTable.name} where id = $1
+            ) + 1
+            WHERE id = $2;`,
+        [page.id, page.id],
+    );
+    await dbClient.query(query);
 
     return res.send({ userId })
 }
