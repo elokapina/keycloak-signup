@@ -1,8 +1,5 @@
 
-function validate() {
-    var username = $("#username-input").val();
-    var email = $("#email-input").val();
-    var email2 = $("#email-input2").val();
+function validate(username, email, email2) {
     if (!username.length || !email.length || !email2.length) {
         return "Username or email cannot be empty.";
     }
@@ -31,10 +28,21 @@ $(function() {
 
     $("#submit-button").click(function(ev) {
         ev.preventDefault();
-        var error = validate();
+        var username = $("#username-input").val();
+        var email = $("#email-input").val();
+        var email2 = $("#email-input2").val();
+        var error = validate(username, email, email2);
         if (error) {
             $("#error-text").html(error);
             return;
         }
+
+        $.post(window.location.pathname, {
+            username,
+            email,
+            requestToken,
+        }, function(data, status) {
+            console.log(data, status);
+        });
     });
 });

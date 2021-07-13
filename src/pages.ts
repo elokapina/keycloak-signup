@@ -85,7 +85,7 @@ export async function renderPage(req: Request, res: Response): Promise<Response>
 }
 
 export async function pageRegister(req: Request, res: Response): Promise<Response> {
-    if (!requestTokens.indexOf(req.body.requestToken)) {
+    if (requestTokens.indexOf(req.body.requestToken) === -1) {
         return res.status(403).send({})
     }
     requestTokens.splice(requestTokens.indexOf(req.body.requestToken), 1);
