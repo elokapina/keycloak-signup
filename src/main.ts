@@ -16,7 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 nunjucks.configure("views", {
     autoescape: true,
-    express: app
+    express: app,
+    throwOnUndefined: true,
 })
 
 setupDatabase()

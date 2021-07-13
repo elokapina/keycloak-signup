@@ -6,6 +6,8 @@ import { createUser, getUsers, sendPasswordReset } from "./keycloak"
 import { getDatabaseConnection } from "./database/database"
 import { v4 as uuidv4 } from "uuid"
 
+const requestTokens = [];
+
 const tokenConfig = {
     length: 6,
     upperCase: true,
@@ -73,10 +75,21 @@ export async function renderPage(req: Request, res: Response): Promise<Response>
         return res.render('shrug.html')
     }
     console.log(`Rendering page ${req.params.pageId}`)
-    return res.render('page.html', pages[0])
+    const requestToken = generateStrings.generate({ length: 32 });
+    requestTokens.push(requestToken);
+    return res.render('page.html', {
+        ...pages[0],
+        requestToken,
+        timestamp: new Date().getTime(),
+    })
 }
 
 export async function pageRegister(req: Request, res: Response): Promise<Response> {
+    if (!requestTokens.indexOf(req.body.requestToken)) {
+        return res.status(403).send({})
+    }
+    requestTokens.splice(requestTokens.indexOf(req.body.requestToken), 1);
+
     const dbClient = getDatabaseConnection()
     const pages = await dbClient.query(
         // TODO also check validity and signup counts
@@ -113,5 +126,5 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     await sendPasswordReset(userId)
     console.log(`User ${userId} created successfully, password reset sent`)
 
-    return res.send({ userId: userId })
+    return res.send({ userId })
 }
