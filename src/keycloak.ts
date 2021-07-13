@@ -10,6 +10,7 @@ async function getClient(): Promise<KcAdminClient> {
     if (!keycloakClient) {
         keycloakClient = new KcAdminClient({
             baseUrl: config.keycloak.baseUrl,
+            realmName: "master",
         })
         await keycloakClient.auth({
           username: config.keycloak.username,

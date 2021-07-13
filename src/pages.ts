@@ -118,6 +118,7 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
             return res.status(400).send({error: 'This email is already reserved'})
         }
     }
+    console.log("Trying to create!")
 
     const userId = await createUser(req.body.username, req.body.email)
     if (!userId) {
