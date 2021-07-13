@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Keycloak Signup</title>
+    <script src="/jquery-3.6.0.min.js"></script>
+    <script src="/page.js?{{ timestamp }}"></script>
 </head>
 <body>
 <h1>Welcome</h1>
 <form method="post">
     <label>
         Username:
-        <input type="text" name="username" placeholder="username" />
+        <input id="username-input" type="text" name="username" placeholder="username" />
     </label>
     <label>
         Email:
-        <input type="email" name="email" placeholder="you@domain.tld" />
+        <input id="email-input" type="email" name="email" placeholder="you@domain.tld" />
     </label>
-    <input type="submit" value="Register" />
+    <label>
+        Email again:
+        <input id="email-input2" type="email" name="email2" placeholder="you@domain.tld" />
+    </label>
+    <input id="submit-button" type="submit" value="Register" />
+    <div id="error-text"></div>
 </form>
 </body>
 </html>
