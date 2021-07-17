@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Keycloak Signup</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="/bulma.min.css">
     <script src="/jquery-3.6.0.min.js"></script>
     <script src="/page.js?{{ timestamp }}"></script>
@@ -12,22 +12,49 @@
 <script>
     var requestToken = "{{ requestToken }}";
 </script>
-<h1>Welcome</h1>
-<form method="post">
-    <label>
-        Username:
-        <input id="username-input" type="text" name="username" placeholder="username" />
-    </label>
-    <label>
-        Email:
-        <input id="email-input" type="email" name="email" placeholder="you@domain.tld" />
-    </label>
-    <label>
-        Email again:
-        <input id="email-input2" type="email" name="email2" placeholder="you@domain.tld" />
-    </label>
-    <input id="submit-button" type="submit" value="Register" />
-    <div id="error-text"></div>
-</form>
+<div class="container">
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <p class="title">
+                {{ title }}
+            </p>
+            <p class="subtitle">
+                {{ welcomeText }}
+            </p>
+        </div>
+    </section>
+    <div class="column">
+        <div class="field">
+            <label class="label" for="username-input">
+                Username
+            </label>
+            <div class="control">
+                <input class="input" id="username-input" type="text" name="username" placeholder="username">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="email-input">
+                Email
+            </label>
+            <div class="control">
+                <input class="input" id="email-input" type="email" name="email" placeholder="you@domain.tld">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="email-input2">
+                Email again
+            </label>
+            <div class="control">
+                <input class="input" id="email-input2" type="email" name="email2" placeholder="you@domain.tld">
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <input class="button is-link" id="submit-button" type="submit" value="Register">
+            </div>
+        </div>
+        <p class="help is-danger" id="error-text"></p>
+    </div>
+</div>
 </body>
 </html>

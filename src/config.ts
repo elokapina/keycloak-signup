@@ -14,6 +14,9 @@ interface Config {
         username: string
     }
     secretToken: string
+    successRedirect: string
+    title: string
+    welcomeText: string
 }
 
 const config: Config = {
@@ -32,6 +35,9 @@ const config: Config = {
         username: process.env.KEYCLOAK_USERNAME,
     },
     secretToken: process.env.KEYCLOAK_SIGNUP_SECRET_TOKEN,
+    successRedirect: process.env.KEYCLOAK_SIGNUP_SUCCESS_REDIRECT,
+    title: process.env.KEYCLOAK_SIGNUP_TITLE,
+    welcomeText: process.env.KEYCLOAK_SIGNUP_WELCOME_TEXT,
 }
 
 export default config

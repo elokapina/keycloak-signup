@@ -1,3 +1,4 @@
+import config from "./config"
 import * as generateStrings from "generate-strings"
 import { DateTime } from "luxon"
 import { PagesTable } from "./database/tables"
@@ -91,6 +92,8 @@ export async function renderPage(req: Request, res: Response): Promise<Response>
         ...pages[0],
         requestToken,
         timestamp: new Date().getTime(),
+        title: config.title,
+        welcomeText: config.welcomeText,
     })
 }
 
