@@ -69,12 +69,21 @@ export async function createPage(creator: string): Promise<IPage> {
 export async function renderPage(req: Request, res: Response): Promise<Response> {
     const dbClient = getDatabaseConnection()
     const pages = await dbClient.query(
-        // TODO also check validity and signup counts
         PagesTable.select("*", ["signup_token"])([req.params.pageId])
     )
     if (pages.length === 0) {
         return res.render('shrug.html')
     }
+    const page = pages[0]
+
+    if (page.signups_done >= page.max_signups) {
+        return res.render('shrug.html')
+    }
+    const currentTime = DateTime.utc()
+    if (currentTime < page.valid_from || currentTime > page.valid_to) {
+        return res.render('shrug.html')
+    }
+
     console.log(`Rendering page ${req.params.pageId}`)
     const requestToken = generateStrings.generate({ length: 32 });
     requestTokens.push(requestToken);
