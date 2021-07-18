@@ -91,6 +91,7 @@ export async function renderPage(req: Request, res: Response): Promise<Response>
     return res.render('page.html', {
         ...pages[0],
         requestToken,
+        style: config.style,
         timestamp: new Date().getTime(),
         title: config.title,
         welcomeText: config.welcomeText,

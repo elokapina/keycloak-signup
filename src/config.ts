@@ -14,6 +14,11 @@ interface Config {
         username: string
     }
     secretToken: string
+    style: {
+        heroBackgroundColor: string
+        pageBackgroundColor: string
+        primaryButtonBackgroundColor: string
+    }
     successRedirect: string
     title: string
     welcomeText: string
@@ -35,9 +40,14 @@ const config: Config = {
         username: process.env.KEYCLOAK_USERNAME,
     },
     secretToken: process.env.KEYCLOAK_SIGNUP_SECRET_TOKEN,
+    style: {
+        heroBackgroundColor: process.env.KEYCLOAK_SIGNUP_STYLE_HERO_BACKGROUND_COLOR,
+        pageBackgroundColor: process.env.KEYCLOAK_SIGNUP_STYLE_PAGE_BACKGROUND_COLOR,
+        primaryButtonBackgroundColor: process.env.KEYCLOAK_SIGNUP_STYLE_PRIMARY_BUTTON_BACKGROUND_COLOR,
+    },
     successRedirect: process.env.KEYCLOAK_SIGNUP_SUCCESS_REDIRECT,
     title: process.env.KEYCLOAK_SIGNUP_TITLE,
-    welcomeText: process.env.KEYCLOAK_SIGNUP_WELCOME_TEXT,
+    welcomeText: process.env.KEYCLOAK_SIGNUP_WELCOME_TEXT
 }
 
 export default config

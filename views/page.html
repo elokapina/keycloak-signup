@@ -7,6 +7,26 @@
     <link rel="stylesheet" href="/bulma.min.css">
     <script src="/jquery-3.6.0.min.js"></script>
     <script src="/page.js?{{ timestamp }}"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        {% if style.primaryButtonBackgroundColor %}
+            .button.is-link {
+                background-color: {{ style.primaryButtonBackgroundColor }};
+            }
+        {% endif %}
+        {% if style.heroBackgroundColor %}
+            .hero.is-primary {
+                background-color: {{ style.heroBackgroundColor }};
+            }
+        {% endif %}
+        {% if style.pageBackgroundColor %}
+            body {
+                background-color: {{ style.pageBackgroundColor }};
+            }
+        {% endif %}
+    </style>
 </head>
 <body>
 <script>
