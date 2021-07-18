@@ -28,6 +28,7 @@ $(function() {
 
     $("#submit-button").click(function(ev) {
         ev.preventDefault();
+        $("#submit-button").prop("disabled", true).addClass("is-loading");
         var username = $("#username-input").val();
         var email = $("#email-input").val();
         var email2 = $("#email-input2").val();
@@ -43,6 +44,7 @@ $(function() {
             requestToken,
         }, function(data, status) {
             console.log(data, status);
+            $("#submit-button").prop("disabled", false).removeClass("is-loading");
         });
     });
 });
