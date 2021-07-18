@@ -78,11 +78,19 @@ export async function renderPage(req: Request, res: Response): Promise<Response>
     const page = pages[0]
 
     if (page.signups_done >= page.max_signups) {
-        return res.render('shrug.html')
+        return res.render(
+            'expired.html', {
+                title: config.title,
+            },
+        )
     }
     const currentTime = DateTime.utc()
     if (currentTime < page.valid_from || currentTime > page.valid_to) {
-        return res.render('shrug.html')
+        return res.render(
+            'expired.html', {
+                title: config.title,
+            },
+        )
     }
 
     console.log(`Rendering page ${req.params.pageId}`)
