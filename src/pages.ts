@@ -102,7 +102,6 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     if (requestTokens.indexOf(req.body.requestToken) === -1) {
         return res.status(403).send({})
     }
-    requestTokens.splice(requestTokens.indexOf(req.body.requestToken), 1);
 
     const dbClient = getDatabaseConnection()
     const pages = await dbClient.query(
@@ -151,8 +150,12 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     if (!userId) {
         return res.status(400).send({ error: 'Unknown error creating user account' })
     }
+
+    console.log(`User ${userId} created successfully`)
+    requestTokens.splice(requestTokens.indexOf(req.body.requestToken), 1);
+
     await sendPasswordReset(userId)
-    console.log(`User ${userId} created successfully, password reset sent`)
+    console.log(`User ${userId} password reset sent`)
 
     // Update counter
     const query = SQL.raw(
