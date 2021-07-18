@@ -26,6 +26,21 @@
                 background-color: {{ style.pageBackgroundColor }};
             }
         {% endif %}
+
+        .spinner {
+            border: 16px solid {% if style.heroBackgroundColor %}{{ style.heroBackgroundColor }}{% else %}f3f3f3{% endif %};
+            border-top: 16px solid {% if style.primaryButtonBackgroundColor %}{{ style.primaryButtonBackgroundColor }}{% else %}3498db{% endif %};
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            animation: spin 2s linear infinite;
+            box-sizing: unset;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -68,10 +83,11 @@
                 <input class="input" id="email-input2" type="email" name="email2" placeholder="you@domain.tld">
             </div>
         </div>
-        <div class="field">
+        <div class="field is-grouped">
             <div class="control">
                 <input class="button is-link" id="submit-button" type="submit" value="Register">
             </div>
+            <div class="spinner is-hidden"></div>
         </div>
         <p class="help is-danger" id="error-text"></p>
     </div>

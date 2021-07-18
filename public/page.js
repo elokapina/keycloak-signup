@@ -28,7 +28,7 @@ $(function() {
 
     $("#submit-button").click(function(ev) {
         ev.preventDefault();
-        $("#submit-button").prop("disabled", true).addClass("is-loading");
+
         var username = $("#username-input").val();
         var email = $("#email-input").val();
         var email2 = $("#email-input2").val();
@@ -38,13 +38,30 @@ $(function() {
             return;
         }
 
-        $.post(window.location.pathname, {
-            username,
-            email,
-            requestToken,
-        }, function(data, status) {
-            console.log(data, status);
-            $("#submit-button").prop("disabled", false).removeClass("is-loading");
+        $("#submit-button").prop("disabled", true);
+        $(".spinner").removeClass("is-hidden");
+
+        $.ajax({
+            data: {
+                username,
+                email,
+                requestToken,
+            },
+            error: function(data) {
+                if (data.responseJSON && data.responseJSON.error) {
+                    $("#error-text").html(data.responseJSON.error);
+                } else {
+                    $("#error-text").html("Unknown error when attempting registration.");
+                }
+                $("#submit-button").prop("disabled", false);
+                $(".spinner").addClass("is-hidden");
+            },
+            method: "POST",
+            success: function() {
+                $("#submit-button").prop("disabled", false);
+                $(".spinner").addClass("is-hidden");
+            },
+            url: window.location.pathname,
         });
     });
 });
