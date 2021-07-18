@@ -58,8 +58,14 @@ $(function() {
             },
             method: "POST",
             success: function() {
-                $("#submit-button").prop("disabled", false);
                 $(".spinner").addClass("is-hidden");
+
+                if (successRedirect.length) {
+                    window.location.href = successRedirect;
+                    $("#success-text").html("Registration successful! Please wait while we redirect you ...");
+                } else {
+                    $("#success-text").html("Registration successful!");
+                }
             },
             url: window.location.pathname,
         });

@@ -100,6 +100,7 @@ export async function renderPage(req: Request, res: Response): Promise<Response>
         ...pages[0],
         requestToken,
         style: config.style,
+        successRedirect: config.successRedirect,
         timestamp: new Date().getTime(),
         title: config.title,
         welcomeText: config.welcomeText,
