@@ -139,14 +139,26 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     // keycloak-admin library doesn't support the `exact` query parameter, so we
     // need to look for exact matches here.
     // TODO patch to upstream
-    const usernameUsers = await getUsers({ username: req.body.username })
+    let usernameUsers
+    try {
+        usernameUsers = await getUsers({ username: req.body.username })
+    } catch (error) {
+        console.error(`Failed to look for similar users from keycloak`, error)
+        return res.status(500).send({ error: 'Unknown error creating user account' })
+    }
     for (const user of usernameUsers) {
         if (user.username === req.body.username) {
             console.log('Found existing user with same username')
             return res.status(400).send({error: 'This username is already reserved'})
         }
     }
-    const emailUsers = await getUsers({ email: req.body.email })
+    let emailUsers
+    try {
+        emailUsers = await getUsers({ email: req.body.email })
+    } catch (error) {
+        console.error(`Failed to fetch user by email from keycloak`, error)
+        return res.status(500).send({ error: 'Unknown error creating user account' })
+    }
     for (const user of emailUsers) {
         if (user.email === req.body.email) {
             console.log('Found existing user with same email')
@@ -155,15 +167,27 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     }
     console.log("Trying to create!")
 
-    const userId = await createUser(req.body.username, req.body.email)
+    let userId
+    try {
+        userId = await createUser(req.body.username, req.body.email)
+    } catch (error) {
+        console.error(`Failed to create user`, error)
+        return res.status(500).send({ error: 'Unknown error creating user account' })
+    }
     if (!userId) {
-        return res.status(400).send({ error: 'Unknown error creating user account' })
+        console.warn(`Failed to get userId back from keycloak user creation for ${req.body.username}`)
+        return res.status(500).send({ error: 'Unknown error creating user account' })
     }
 
     console.log(`User ${userId} created successfully`)
     requestTokens.splice(requestTokens.indexOf(req.body.requestToken), 1);
 
-    await sendPasswordReset(userId)
+    try {
+        await sendPasswordReset(userId)
+    } catch (error) {
+        console.error(`Failed to send password reset`, error)
+        return res.status(500).send({ error: 'Unknown error creating user account' })
+    }
     console.log(`User ${userId} password reset sent`)
 
     // Update counter
