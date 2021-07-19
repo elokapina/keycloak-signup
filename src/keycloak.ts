@@ -12,12 +12,22 @@ async function getClient(): Promise<KcAdminClient> {
             baseUrl: config.keycloak.baseUrl,
             realmName: "master",
         })
+    }
+    if (config.keycloak.grantType === 'password') {
         await keycloakClient.auth({
           username: config.keycloak.username,
           password: config.keycloak.password,
           grantType: 'password',
           clientId: config.keycloak.clientId,
         })
+    } else if (config.keycloak.grantType === 'client_credentials') {
+        await keycloakClient.auth({
+          grantType: "client_credentials",
+          clientId: config.keycloak.clientId,
+          clientSecret: config.keycloak.clientSecret,
+        })
+    } else {
+        throw Error(`Unknown keycloak grantType ${config.keycloak.grantType}`)
     }
     return keycloakClient
 }

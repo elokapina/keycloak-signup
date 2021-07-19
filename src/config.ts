@@ -9,6 +9,8 @@ interface Config {
     keycloak: {
         baseUrl: string
         clientId: string
+        clientSecret: string
+        grantType: string
         password: string
         realm: string
         username: string
@@ -35,6 +37,8 @@ const config: Config = {
     keycloak: {
         baseUrl: process.env.KEYCLOAK_BASE_URL,
         clientId: process.env.KEYCLOAK_CLIENT_ID,
+        clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+        grantType: process.env.KEYCLOAK_GRANT_TYPE,
         password: process.env.KEYCLOAK_PASSWORD,
         realm: process.env.KEYCLOAK_REALM,
         username: process.env.KEYCLOAK_USERNAME,
