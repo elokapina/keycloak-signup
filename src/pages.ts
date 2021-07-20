@@ -47,18 +47,16 @@ async function generateSignupToken(): Promise<string|null> {
     return null
 }
 
-export async function createPage(creator: string): Promise<IPage> {
+export async function createPage(creator: string, maxSignups: number, validDays: number): Promise<IPage> {
     const signupToken = await generateSignupToken()
     const adminToken = uuidv4()
     const page = {
         admin_token: adminToken,
         created_by: creator,
-        // TODO make configurable or depending on type of command to create page
-        max_signups: 50,
+        max_signups: maxSignups,
         signup_token: signupToken,
         valid_from: DateTime.utc(),
-        // TODO make configurable or based on command parameters
-        valid_to: DateTime.utc().plus({ days: 3 }),
+        valid_to: DateTime.utc().plus({ days: validDays }),
     }
     const query = PagesTable.insertFromObj(page)
     const dbConnection = getDatabaseConnection()

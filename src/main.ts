@@ -40,10 +40,12 @@ app.post('/api/pages', async(req, res) => {
             error: "Must supply a creator"
         })
     }
+    const maxSignups = req.body.maxSignups || 50
+    const validDays = req.body.validDays || 3
 
     let page: IPage
     try {
-        page = await createPage(creator)
+        page = await createPage(creator, maxSignups, validDays)
     } catch (error) {
         console.error(error)
         return res.status(500).send({

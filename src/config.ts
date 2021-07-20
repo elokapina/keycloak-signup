@@ -15,6 +15,7 @@ interface Config {
         realm: string
         username: string
     }
+    maxSignupsDefault: number
     secretToken: string
     style: {
         heroBackgroundColor: string
@@ -23,6 +24,7 @@ interface Config {
     }
     successRedirect: string
     title: string
+    validDaysDefault: number
     welcomeText: string
 }
 
@@ -43,6 +45,7 @@ const config: Config = {
         realm: process.env.KEYCLOAK_REALM,
         username: process.env.KEYCLOAK_USERNAME,
     },
+    maxSignupsDefault: Number.parseInt(process.env.KEYCLOAK_SIGNUP_MAX_SIGNUPS_DEFAULT || '50'),
     secretToken: process.env.KEYCLOAK_SIGNUP_SECRET_TOKEN,
     style: {
         heroBackgroundColor: process.env.KEYCLOAK_SIGNUP_STYLE_HERO_BACKGROUND_COLOR,
@@ -51,6 +54,7 @@ const config: Config = {
     },
     successRedirect: process.env.KEYCLOAK_SIGNUP_SUCCESS_REDIRECT,
     title: process.env.KEYCLOAK_SIGNUP_TITLE,
+    validDaysDefault: Number.parseInt(process.env.KEYCLOAK_SIGNUP_VALID_DAYS_DEFAULT || '3'),
     welcomeText: process.env.KEYCLOAK_SIGNUP_WELCOME_TEXT
 }
 
