@@ -160,7 +160,11 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
     for (const user of emailUsers) {
         if (user.email === req.body.email) {
             console.log('Found existing user with same email')
-            return res.status(400).send({error: 'This email is already reserved'})
+            return res.status(400).send({
+                error: 'This email is already reserved',
+                errorCode: 'E_EMAIL_EXISTS',
+                keycloakUrl: `${config.keycloak.baseUrl}/realms/${config.keycloak.realm}/account`,
+            })
         }
     }
     console.log("Trying to create!")

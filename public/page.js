@@ -49,7 +49,13 @@ $(function() {
             },
             error: function(data) {
                 if (data.responseJSON && data.responseJSON.error) {
-                    $("#error-text").html(data.responseJSON.error);
+                    if (data.responseJSON.errorCode === 'E_EMAIL_EXISTS') {
+                        var errorMsg = `${data.responseJSON.error}. You can reset your password ` +
+                            `<a href="${data.responseJSON.keycloakUrl}">from the account console</a>.`;
+                        $("#error-text").html(errorMsg);
+                    } else {
+                        $("#error-text").html(data.responseJSON.error);
+                    }
                 } else {
                     $("#error-text").html("Unknown error when attempting registration.");
                 }
