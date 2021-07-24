@@ -32,7 +32,7 @@ async function getClient(): Promise<KcAdminClient> {
     return keycloakClient
 }
 
-export async function createUser(username: string, email: string): Promise<string> {
+export async function createUser(username: string, email: string, signupCode: string): Promise<string> {
     const client = await getClient()
     const response = await client.users.create({
         realm: config.keycloak.realm,
@@ -40,6 +40,9 @@ export async function createUser(username: string, email: string): Promise<strin
         email,
         emailVerified: true,
         enabled: true,
+        attributes: {
+            signupCode,
+        }
     })
     return response.id
 }

@@ -171,7 +171,7 @@ export async function pageRegister(req: Request, res: Response): Promise<Respons
 
     let userId
     try {
-        userId = await createUser(req.body.username, req.body.email)
+        userId = await createUser(req.body.username, req.body.email, req.params.pageId)
     } catch (error) {
         console.error(`Failed to create user`, error)
         return res.status(500).send({ error: 'Unknown error creating user account' })
