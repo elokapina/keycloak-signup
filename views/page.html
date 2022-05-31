@@ -1,98 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="/bulma.min.css">
-    <script src="/jquery-3.6.0.min.js"></script>
-    <script src="/page.js?{{ timestamp }}"></script>
-    <style>
-        html, body {
-            height: 100%;
-        }
-        {% if style.primaryButtonBackgroundColor %}
-            .button.is-link {
-                background-color: {{ style.primaryButtonBackgroundColor }};
-            }
-        {% endif %}
-        {% if style.heroBackgroundColor %}
-            .hero.is-primary {
-                background-color: {{ style.heroBackgroundColor }};
-            }
-        {% endif %}
-        {% if style.pageBackgroundColor %}
-            body {
-                background-color: {{ style.pageBackgroundColor }};
-            }
-        {% endif %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="/bulma.min.css">
+        <link rel="stylesheet" href="/style.css" type="text/css">
+        <link rel="icon" href="/images/favicon.png" type="image/x-icon">
+        <script src="/jquery-3.6.0.min.js"></script>
+        <script src="/page.js?{{ timestamp }}"></script>
+    </head>
+    <body>
+        <script>
+            var requestToken = "{{ requestToken }}";
+            var successRedirect = "{{ successRedirect }}";
+        </script>
 
-        .spinner {
-            border: 16px solid {% if style.heroBackgroundColor %}{{ style.heroBackgroundColor }}{% else %}f3f3f3{% endif %};
-            border-top: 16px solid {% if style.primaryButtonBackgroundColor %}{{ style.primaryButtonBackgroundColor }}{% else %}3498db{% endif %};
-            border-radius: 50%;
-            width: 8px;
-            height: 8px;
-            animation: spin 2s linear infinite;
-            box-sizing: unset;
-        }
+        <div class="signup__container2">
+            <div class="container__child signup__thumbnail2">  
+                <div class="thumbnail__content"><br>
+                    <h3>{{ title }}</h3>
+                    <div class="info-box">
+                        {{ welcomeText }}
+                    </div>
+                </div>
+                <div class="signup__overlay"></div> 
+            </div>
+        
+            <div class="container__child signup__form">
+                <div class="form-group">
+                <label for="username-input"><b>Käyttäjänimi</b> | Username</label><br>
+                <input class="form-control" type="text" name="username" id="username-input" placeholder="Kirjoita haluamasi käyttäjänimi" required />
+                </div>
+                <div class="form-group">
+                <label for="email-input"><b>Sähköposti</b> | Email</label><br>
+                <input class="form-control" type="text" name="email" id="email-input" placeholder="Syötä sähköpostiosoitteesi" required />
+                </div>
+                <div class="form-group">
+                <label for="email-input2"><b>Sähköposti (vahvistus)</b> | Email (verify)</label><br>
+                <input class="form-control" type="text" name="email2" id="email-input2" placeholder="Syötä sähköpostiosoitteesi uudelleen" required />
+                </div>
+                <div class="form-group">
+                <label class="radio-check" for="privacy-cb"><input class="form-radio checkbox" type="checkbox" name="privacy-cb" value="True" required> Hyväksyn <a class="signup-link" target="_blank" rel="noopener" href="https://elokapina.fi/privacy-policy">tietosuojakäytännön</a> / I agree to <a class="signup-link" target="_blank" rel="noopener" href="https://elokapina.fi/en/privacy-policy/">privacy policy</a></label> <br>
+                <!-- <label class="radio-check" for="mailing-list-cb"><input class="form-radio checkbox" type="checkbox" name="mailing-list-cb" value="True"> Haluan liittyä Elokapinan sähköpostilistalle | I want to join XR Finland mailing list.</label> -->
+                </div>  
+                
+                <div class="submit-group">
+                    <input class="btn btn--form" type="submit" value="Rekisteröidy / Register" />
+                </div>
+                <div class="spinner is-hidden"></div>
+                <p class="help is-danger" id="error-text"></p>
+                <p class="help is-info" id="success-text"></p>
+            </div>
+        </div>
+        <br>
+        <center>
+        <div id="address-footer">
+            <center>
+            <div class="footer_logo">
+                <br>
+                <img alt="Elokapinan pieni logo" src="images/extinctionrebellion-logo_240.png">
+            </div>
+            </center>
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-<script>
-    var requestToken = "{{ requestToken }}";
-    var successRedirect = "{{ successRedirect }}";
-</script>
-<div class="container">
-    <section class="hero is-primary">
-        <div class="hero-body">
-            <p class="title">
-                {{ title }}
-            </p>
-            <p class="subtitle">
-                {{ welcomeText }}
-            </p>
-        </div>
-    </section>
-    <div class="column">
-        <div class="field">
-            <label class="label" for="username-input">
-                Username
-            </label>
-            <div class="control">
-                <input class="input" id="username-input" type="text" name="username" placeholder="username">
+                <font size=3rem><span style="width: 10%"> </span><b> koulutus</b>@elokapina.me</font><br>
+                <br>
+            <br>
             </div>
+        
         </div>
-        <div class="field">
-            <label class="label" for="email-input">
-                Email
-            </label>
-            <div class="control">
-                <input class="input" id="email-input" type="email" name="email" placeholder="you@domain.tld">
-            </div>
-        </div>
-        <div class="field">
-            <label class="label" for="email-input2">
-                Email again
-            </label>
-            <div class="control">
-                <input class="input" id="email-input2" type="email" name="email2" placeholder="you@domain.tld">
-            </div>
-        </div>
-        <div class="field is-grouped">
-            <div class="control">
-                <input class="button is-link" id="submit-button" type="submit" value="Register">
-            </div>
-            <div class="spinner is-hidden"></div>
-        </div>
-        <p class="help is-danger" id="error-text"></p>
-        <p class="help is-info" id="success-text"></p>
-    </div>
-</div>
-</body>
+        </center>
+    </body>
 </html>
