@@ -32,9 +32,9 @@
   "author": "Elokapina / Extinction Rebellion Finland <info@elokapina.me>",
   "license": "Apache-2.0",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "generate-strings": "^1.1.2",
     "keycloak-admin": "^1.14.17",
     "luxon": "^1.27.0",
