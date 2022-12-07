@@ -34,7 +34,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "generate-strings": "^1.1.2",
     "keycloak-admin": "^1.14.17",
     "luxon": "^1.27.0",
